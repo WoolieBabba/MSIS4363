@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:background="@drawable/buttons"
             android:onClick="onClickBack"
-            android:text="< BACK TO COURSE LIST"
+            android:text="BACK TO COURSE LIST"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
