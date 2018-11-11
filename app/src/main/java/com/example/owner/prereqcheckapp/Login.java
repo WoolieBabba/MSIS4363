@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,9 @@ public class Login extends AppCompatActivity {
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
+    //public EditText enteredUser = (EditText) findViewById(R.id.userName);
+    //public EditText enteredPword = (EditText) findViewById(R.id.password);
+    public String u,p;
    // public ProgressBar progressBar;
 
     // End Declaring layout button, edit texts
@@ -61,10 +65,10 @@ public class CheckLogin extends AsyncTask<String,String,String>
     String name1 = "";
 
 
-   // protected void onPreExecute()
-    //{
+   protected void onPreExecute()
+    {
        // progressBar.setVisibility(View.VISIBLE);
-   // }
+    }
 
     @Override
     protected void onPostExecute(String r)
@@ -73,9 +77,6 @@ public class CheckLogin extends AsyncTask<String,String,String>
         Toast.makeText(Login.this, r, Toast.LENGTH_LONG).show();
         if(isSuccess)
         {
-            message = (TextView) findViewById(R.id.textView2);
-            message.setText(name1);
-
         }
     }
     @Override
@@ -91,13 +92,20 @@ public class CheckLogin extends AsyncTask<String,String,String>
             }
             else
             {
+
                 // Change below query according to your own database.
-                String query = "select * from Student";
+                String query = "select Username from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next())
                 {
-                    name1= rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    //u = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    //p = rs.getString("Password");
+//                    if (enteredUser.getText().toString() != "") {
+//                        if (enteredUser.getText().toString() == u &&
+//                                enteredPword.getText().toString() == p)
+//                            Toast.makeText(Login.this, "yay", Toast.LENGTH_LONG).show();
+//                    }
                     z = "query successful";
                     isSuccess=true;
                     con.close();
