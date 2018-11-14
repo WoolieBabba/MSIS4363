@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".CourseSelection" />
-        <activity android:name=".DegreePlan"></activity>
+        <activity android:name=".DegreePlan" />
+        <activity android:name=".History"></activity>
     </application>
 
 </manifest>

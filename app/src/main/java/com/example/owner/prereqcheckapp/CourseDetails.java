@@ -20,11 +20,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Register extends AppCompatActivity {
+public class CourseDetails extends AppCompatActivity {
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
-    public EditText firstName, lastName, userName, password;
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
@@ -32,10 +31,10 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_course_details);
 
         // Getting values from button, texts and progress bar
-        run = (Button) findViewById(R.id.btnregisterStudent);
+        run = (Button) findViewById(R.id.btnAddPlan);
 
 
         run.setOnClickListener(new View.OnClickListener()
@@ -43,26 +42,19 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                InsertRegister insertRegister = new InsertRegister();// this is the Asynctask, which is used to process in background to reduce load on app process
-                insertRegister.execute("");
+                AddPlan addPlan = new AddPlan();// this is the Asynctask, which is used to process in background to reduce load on app process
+                addPlan.execute("");
             }
         });
         //End Setting up the function when button login is clicked
     }
 
-    public class InsertRegister extends AsyncTask<String,String,String>
+    public class AddPlan extends AsyncTask<String,String,String>
     {
         String z = "";
         Boolean isSuccess = false;
         String name1 = "";
-        String enterFirst = "";
-        String enterLast = "";
-        String enterUser = "";
-        String enterPass = "";
-       // EditText enteredFirst = (EditText) findViewById(R.id.firstName);
-       // EditText enteredLast = (EditText) findViewById(R.id.lastName);
-       // EditText enteredUser = (EditText) findViewById(R.id.userNameR);
-       // EditText enteredPass = (EditText) findViewById(R.id.passwordR);
+
 
         protected void onPreExecute()
         {
@@ -73,13 +65,13 @@ public class Register extends AppCompatActivity {
         protected void onPostExecute(String r)
         {
 
-            Toast.makeText(Register.this, r, Toast.LENGTH_LONG).show();
+            Toast.makeText(CourseDetails.this, r, Toast.LENGTH_LONG).show();
             if(isSuccess)
             {
-              //  message = (TextView) findViewById(R.id.textView2);
-              //  message.setText(name1);
-                Intent goToLogin = new Intent(getApplicationContext(), Login.class);
-                startActivity(goToLogin);
+                //  message = (TextView) findViewById(R.id.textView2);
+                //  message.setText(name1);
+                Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
+                startActivity(goToDegreePlan);
             }
         }
         @Override
@@ -154,5 +146,10 @@ public class Register extends AppCompatActivity {
             Log.e("error here 3 : ", e.getMessage());
         }
         return connection;
+    }
+    public void btnHistory(View v) {
+
+        Intent goToHistory = new Intent(getApplicationContext(), History.class);
+        startActivity(goToHistory);
     }
 }

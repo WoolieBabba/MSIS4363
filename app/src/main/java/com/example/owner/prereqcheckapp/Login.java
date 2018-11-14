@@ -1,6 +1,7 @@
 package com.example.owner.prereqcheckapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +25,8 @@ public class Login extends AppCompatActivity {
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
-    //public EditText enteredUser = (EditText) findViewById(R.id.userName);
-    //public EditText enteredPword = (EditText) findViewById(R.id.password);
+   // public EditText enteredUser = (EditText) findViewById(R.id.userName);
+  //  public EditText enteredPword = (EditText) findViewById(R.id.password);
     public String u,p;
    // public ProgressBar progressBar;
 
@@ -77,6 +78,8 @@ public class CheckLogin extends AsyncTask<String,String,String>
         Toast.makeText(Login.this, r, Toast.LENGTH_LONG).show();
         if(isSuccess)
         {
+            Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
+            startActivity(goToCourseSelection);
         }
     }
     @Override
@@ -94,18 +97,18 @@ public class CheckLogin extends AsyncTask<String,String,String>
             {
 
                 // Change below query according to your own database.
-                String query = "select Username from student";
+                String query = "select Username, Password from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next())
                 {
-                    //u = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
-                    //p = rs.getString("Password");
-//                    if (enteredUser.getText().toString() != "") {
-//                        if (enteredUser.getText().toString() == u &&
-//                                enteredPword.getText().toString() == p)
-//                            Toast.makeText(Login.this, "yay", Toast.LENGTH_LONG).show();
-//                    }
+                    name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    p = rs.getString("Password");
+  //                  if (enteredUser.getText().toString() != "") {
+   //                     if (enteredUser.getText().toString() == u &&
+   //                             enteredPword.getText().toString() == p)
+    //                       Toast.makeText(Login.this, "yay", Toast.LENGTH_LONG).show();
+    //                }
                     z = "query successful";
                     isSuccess=true;
                     con.close();
@@ -142,7 +145,7 @@ public class CheckLogin extends AsyncTask<String,String,String>
         {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             //your database connection string goes below
-            ConnectionURL = "jdbc:jtds:sqlserver://msis4363.database.windows.net:1433;database=prereq_check;user=teammb@msis4363;password=cwtiyxWgRLH5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            ConnectionURL = "jdbc:jtds:sqlserver://msis4363.database.windows.net:1433;databasename=prereq_check;user=teammb@msis4363;password=cwtiyxWgRLH5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
             connection = DriverManager.getConnection(ConnectionURL);
         }
         catch (SQLException se)
@@ -158,6 +161,14 @@ public class CheckLogin extends AsyncTask<String,String,String>
             Log.e("error here 3 : ", e.getMessage());
         }
         return connection;
+    }
+
+    //Registration button functionality will take you to the registration page
+    public void btnClickRegister(View v){
+
+        Intent goToRegisterPage = new Intent(getApplicationContext(), Register.class);
+        startActivity(goToRegisterPage);
+
     }
 
 }

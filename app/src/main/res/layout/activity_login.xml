@@ -114,7 +114,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttons"
-                android:onClick="btnClickLogin"
+                android:onClick="btnLogin"
                 android:text="LOGIN"
                 android:textColor="?android:attr/colorBackground"
                 android:textSize="18sp"

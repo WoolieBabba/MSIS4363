@@ -167,7 +167,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight=".07"
             android:background="@drawable/buttons"
-            android:onClick="btnClickRegisterStudent"
+            android:onClick="btnRegister"
             android:text="REGISTER"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"

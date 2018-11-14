@@ -19,12 +19,12 @@
         <TextView
             android:id="@+id/textView9"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/buttons"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="SELECT COURSE BELOW:"
+            android:text="SELECT COURSE BELOW:\nSelecting a course will display details"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -32,7 +32,9 @@
         <ListView
             android:id="@+id/courselist"
             android:layout_width="match_parent"
-            android:layout_height="185dp" />
+            android:layout_height="350dp"
+            android:clickable="false"
+            android:scrollbars="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,46 +43,10 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/buttons"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="COURSE DETAILS:"
-            android:textColor="?android:attr/colorBackground"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <ListView
-            android:id="@+id/prerequisitelist"
-            android:layout_width="match_parent"
-            android:layout_height="175dp">
-
-        </ListView>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnAddPlan"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons"
-                android:onClick="onClickAddPlan"
-                android:text="ADD TO PLAN"
-                android:textColor="?android:attr/colorBackground"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnViewPlan"
