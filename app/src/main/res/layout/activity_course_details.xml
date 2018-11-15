@@ -73,7 +73,7 @@
                 android:background="@drawable/buttons"
                 android:onClick="onClickViewPlan"
                 android:text="ADD PLAN"
-                android:textColor="?android:attr/colorActivatedHighlight"
+                android:textColor="?attr/colorBackgroundFloating"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                 android:background="@drawable/buttons"
                 android:onClick="btnHistory"
                 android:text="HISTORY"
-                android:textColor="?android:attr/colorActivatedHighlight"
+                android:textColor="?attr/colorBackgroundFloating"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -8,12 +8,10 @@ import android.os.StrictMode;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.Connection;
@@ -21,10 +19,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.xml.transform.Result;
 
 public class CourseSelection extends AppCompatActivity {
     // Declaring layout button, edit texts
-    public ListView run;
+
+    private ArrayList<String> arrayListCourse;
+    private ArrayAdapter<String> arrayAdapterCourse;
+    private String selectedChoice = "";
+    public Button run;
     public TextView message;
     // End Declaring layout button, edit texts
     // Declaring connection variables
@@ -35,8 +40,13 @@ public class CourseSelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_selection);
 
+        arrayListCourse = new ArrayList<String>();
+        arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
+        final ListView listView = (ListView) findViewById(R.id.courselist);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
+        listView.setAdapter(arrayAdapterCourse);
         // Getting values from button, texts and progress bar
-        run = (ListView) findViewById(R.id.courselist);
+        run = (Button) findViewById(R.id.btnGetCourses);
 
 
        // run.setOnClickListener(new MenuItem.OnMenuItemClickListener()
@@ -45,18 +55,19 @@ public class CourseSelection extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                CourseSelect courseSelect = new CourseSelect();// this is the Asynctask, which is used to process in background to reduce load on app process
-                courseSelect.execute("");
+                CourseDisplay courseDisplay = new CourseDisplay();// this is the Asynctask, which is used to process in background to reduce load on app process
+                courseDisplay.execute("");
             }
         });
         //End Setting up the function when button login is clicked
     }
 
-    public class CourseSelect extends AsyncTask<String,String,String>
+    public class CourseDisplay extends AsyncTask<String,String,String>
     {
         String z = "";
         Boolean isSuccess = false;
-        String name1 = "";
+        String cID = "";
+        String title1 = "";
 
 
         protected void onPreExecute()
@@ -91,12 +102,13 @@ public class CourseSelection extends AppCompatActivity {
                 else
                 {
                     // Change below query according to your own database.
-                    String query = "select * from course";
+                    String query = "select CourseID, Title from course";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if(rs.next())
                     {
-                        name1 = rs.getString("course"); //Name is the string label of a column in database, read through the select query
+                        cID = rs.getString("CourseID"); //Name is the string label of a column in database, read through the select query
+                        title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
                         z = "query successful";
                         isSuccess=true;
                         con.close();

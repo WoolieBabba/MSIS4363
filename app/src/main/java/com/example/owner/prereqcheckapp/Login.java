@@ -97,13 +97,13 @@ public class CheckLogin extends AsyncTask<String,String,String>
             {
 
                 // Change below query according to your own database.
-                String query = "select Username, Password from student";
+                String query = "select * from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next())
                 {
-                    name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
-                    p = rs.getString("Password");
+                    //name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    //p = rs.getString("Password");
   //                  if (enteredUser.getText().toString() != "") {
    //                     if (enteredUser.getText().toString() == u &&
    //                             enteredPword.getText().toString() == p)

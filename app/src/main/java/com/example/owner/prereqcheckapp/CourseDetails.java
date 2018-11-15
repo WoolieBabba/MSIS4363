@@ -153,3 +153,4 @@ public class CourseDetails extends AppCompatActivity {
         startActivity(goToHistory);
     }
 }
+//
