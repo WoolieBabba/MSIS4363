@@ -1,6 +1,7 @@
 package com.example.owner.prereqcheckapp;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -19,22 +20,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
 
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
-   // public EditText enteredUser = (EditText) findViewById(R.id.userName);
-  //  public EditText enteredPword = (EditText) findViewById(R.id.password);
     public String u,p;
-   // public ProgressBar progressBar;
-
-    // End Declaring layout button, edit texts
 
     // Declaring connection variables
     public Connection con;
     String un,pass,db,ip;
+    ArrayList<ClipData.Item> userList;
+
     //End Declaring connection variables
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +64,19 @@ public class CheckLogin extends AsyncTask<String,String,String>
     Boolean isSuccess = false;
     String name1 = "";
 
+    EditText userName = (EditText) findViewById(R.id.userName);
+    EditText password = (EditText) findViewById(R.id.password);
+
+    String user1 = userName.getText().toString().toLowerCase();
+    String pass = password.getText().toString();
+
+
+
 
    protected void onPreExecute()
     {
-       // progressBar.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
@@ -96,14 +104,16 @@ public class CheckLogin extends AsyncTask<String,String,String>
             else
             {
 
+                userList = new ArrayList<ClipData.Item>();
                 // Change below query according to your own database.
-                String query = "select * from student";
+                String query = "select Username, Password from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next())
                 {
-                    name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
-                    //p = rs.getString("Password");
+                    user1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    pass = rs.getString("Password");
+                    
   //                  if (enteredUser.getText().toString() != "") {
    //                     if (enteredUser.getText().toString() == u &&
    //                             enteredPword.getText().toString() == p)
