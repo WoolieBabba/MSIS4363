@@ -55,17 +55,21 @@ public class Register extends AppCompatActivity {
         String z = "";
         Boolean isSuccess = false;
         String name1 = "";
-        String enterFirst = "";
+        String fName = "";
         String enterLast = "";
         String enterUser = "";
         String enterPass = "";
-       // EditText enteredFirst = (EditText) findViewById(R.id.firstName);
-       // EditText enteredLast = (EditText) findViewById(R.id.lastName);
-       // EditText enteredUser = (EditText) findViewById(R.id.userNameR);
-       // EditText enteredPass = (EditText) findViewById(R.id.passwordR);
+
 
         protected void onPreExecute()
         {
+            // EditText enteredFirst = (EditText) findViewById(R.id.firstName);
+            // EditText enteredLast = (EditText) findViewById(R.id.lastName);
+           //  EditText enteredUser = (EditText) findViewById(R.id.userNameR);
+           //  EditText enteredPass = (EditText) findViewById(R.id.passwordR);
+
+            // String fname = firstName.getText().toString();
+            // String lname = lastName.getText().toString();
 
         }
 
@@ -101,7 +105,7 @@ public class Register extends AppCompatActivity {
                     ResultSet rs = stmt.executeQuery(query);
                     if(rs.next())
                     {
-                        name1 = rs.getString("lastName"); //Name is the string label of a column in database, read through the select query
+                        name1 = rs.getString("Lastname"); //Name is the string label of a column in database, read through the select query
                         z = "query successful";
                         isSuccess=true;
                         con.close();

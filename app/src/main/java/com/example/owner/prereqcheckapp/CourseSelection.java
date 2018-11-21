@@ -26,11 +26,13 @@ import javax.xml.transform.Result;
 public class CourseSelection extends AppCompatActivity {
     // Declaring layout button, edit texts
 
-    private ArrayList<String> arrayListCourse;
-    private ArrayAdapter<String> arrayAdapterCourse;
-    private String selectedChoice = "";
+    //private ArrayList<String> arrayListCourse;
+   // private ArrayAdapter<String> arrayAdapterCourse;
+   // private String selectedChoice = "";
     public Button run;
     public TextView message;
+    //String cs, cstitle;
+    public String u,p;
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
@@ -40,11 +42,11 @@ public class CourseSelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_selection);
 
-        arrayListCourse = new ArrayList<String>();
-        arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
-        final ListView listView = (ListView) findViewById(R.id.courselist);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
-        listView.setAdapter(arrayAdapterCourse);
+      //  arrayListCourse = new ArrayList<String>();
+       // arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
+       // final ListView listView = (ListView) findViewById(R.id.courselist);
+        //listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
+        //listView.setAdapter(arrayAdapterCourse);
         // Getting values from button, texts and progress bar
         run = (Button) findViewById(R.id.btnGetCourses);
 
@@ -66,7 +68,7 @@ public class CourseSelection extends AppCompatActivity {
     {
         String z = "";
         Boolean isSuccess = false;
-        String cID = "";
+        String name1 = "";
         String title1 = "";
 
 
@@ -102,13 +104,13 @@ public class CourseSelection extends AppCompatActivity {
                 else
                 {
                     // Change below query according to your own database.
-                    String query = "select CourseID, Title from course";
+                    String query = "select * from student";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if(rs.next())
                     {
-                        cID = rs.getString("CourseID"); //Name is the string label of a column in database, read through the select query
-                        title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
+                        name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                        //title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
                         z = "query successful";
                         isSuccess=true;
                         con.close();
@@ -164,7 +166,7 @@ public class CourseSelection extends AppCompatActivity {
     }
 
     //View Plan button functionality will take you to Degree Plan to view courses you have added there
-    public void btnViewPlan(View v) {
+    public void ViewPlan(View v) {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
         startActivity(goToDegreePlan);

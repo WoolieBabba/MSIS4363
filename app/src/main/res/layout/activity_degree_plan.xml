@@ -58,17 +58,17 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnAddPlan2"
+            android:id="@+id/btnAddHistory"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@drawable/buttons"
-            android:onClick="onClickBack"
-            android:text="BACK TO COURSE LIST"
+            android:onClick="AddHistory"
+            android:text="ADD ALL TO HISTORY"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />

@@ -102,7 +102,7 @@ public class CheckLogin extends AsyncTask<String,String,String>
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next())
                 {
-                    //name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
                     //p = rs.getString("Password");
   //                  if (enteredUser.getText().toString() != "") {
    //                     if (enteredUser.getText().toString() == u &&
