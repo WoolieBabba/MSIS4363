@@ -20,19 +20,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.transform.Result;
 
 public class CourseSelection extends AppCompatActivity {
     // Declaring layout button, edit texts
 
-    //private ArrayList<String> arrayListCourse;
-   // private ArrayAdapter<String> arrayAdapterCourse;
-   // private String selectedChoice = "";
+    private ArrayList<String> arrayListCourse;
+    private ArrayAdapter<String> arrayAdapterCourse;
+    private String selectedChoice = "";
     public Button run;
     public TextView message;
-    //String cs, cstitle;
-    public String u,p;
+
+    public String courseid, title1;
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
@@ -42,16 +43,18 @@ public class CourseSelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_selection);
 
-      //  arrayListCourse = new ArrayList<String>();
-       // arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
-       // final ListView listView = (ListView) findViewById(R.id.courselist);
-        //listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
-        //listView.setAdapter(arrayAdapterCourse);
-        // Getting values from button, texts and progress bar
+       arrayListCourse = new ArrayList<String>();
+       arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
+        ListView listView = (ListView) findViewById(R.id.courselist);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
+        listView.setAdapter(arrayAdapterCourse);
+       //  Getting values from button, texts and progress bar
         run = (Button) findViewById(R.id.btnGetCourses);
 
 
+
        // run.setOnClickListener(new MenuItem.OnMenuItemClickListener()
+        // run.setOnClickListener(new MenuItem.OnMenuItemClickListener()
         run.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -64,11 +67,12 @@ public class CourseSelection extends AppCompatActivity {
         //End Setting up the function when button login is clicked
     }
 
-    public class CourseDisplay extends AsyncTask<String,String,String>
+    public class CourseDisplay extends AsyncTask<String,String,ArrayList<String>>
     {
         String z = "";
         Boolean isSuccess = false;
         String name1 = "";
+        String cID = "";
         String title1 = "";
 
 
@@ -78,22 +82,25 @@ public class CourseSelection extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String r)
+        protected void onPostExecute(ArrayList<String> r)
         {
 
-            Toast.makeText(CourseSelection.this, r, Toast.LENGTH_LONG).show();
+            Iterator<String> interator =r.iterator();
+            while (interator.hasNext()){
+               arrayAdapterCourse.add(interator.next().toString());
+            }
             if(isSuccess)
             {
-                //  message = (TextView) findViewById(R.id.textView2);
-                //  message.setText(name1);
-                Intent goToCourseDetails = new Intent(getApplicationContext(), CourseDetails.class);
-                startActivity(goToCourseDetails);
-            }
+             //     message = (TextView) findViewById(R.id.textView2);
+              //    message.setText(name1);
+
+           }
         }
         @Override
-        protected String doInBackground(String... params)
+        protected ArrayList<String> doInBackground(String... params)
         {
-
+            //create an ArrayList
+            ArrayList<String> courselist1 = null;
             try
             {
                 con = connectionclass();        // Connect to database
@@ -104,13 +111,21 @@ public class CourseSelection extends AppCompatActivity {
                 else
                 {
                     // Change below query according to your own database.
-                    String query = "select * from student";
+                    String query = "select CourseID, Title from course";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
+                    //build an ArrayList to hold results
+                    courselist1 = new ArrayList<String>();
+                    while (rs.next()){
+
+                        courselist1.add(rs.getString("CourseID"));
+                        courselist1.add(rs.getString("Title"));
+                    }
                     if(rs.next())
                     {
-                        name1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
-                        //title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
+                        cID = rs.getString("CourseID"); //Name is the string label of a column in database, read through the select query
+                        title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
+
                         z = "query successful";
                         isSuccess=true;
                         con.close();
@@ -131,7 +146,7 @@ public class CourseSelection extends AppCompatActivity {
                 Log.d ("sql error", z);
             }
 
-            return z;
+            return courselist1;
         }
     }
 
@@ -164,7 +179,13 @@ public class CourseSelection extends AppCompatActivity {
         }
         return connection;
     }
-
+    public void CourseDetails (View v){
+        Intent goToCourseDetails = new Intent(getApplicationContext(), CourseDetails.class);
+       // ArrayList<String> coursedetails = new ArrayList<String>();
+       // Intent i = getIntent();
+        //ArrayList<String> coursedetails = i.getStringArrayListExtra("CourseID");
+        startActivity(goToCourseDetails);
+    }
     //View Plan button functionality will take you to Degree Plan to view courses you have added there
     public void ViewPlan(View v) {
 
