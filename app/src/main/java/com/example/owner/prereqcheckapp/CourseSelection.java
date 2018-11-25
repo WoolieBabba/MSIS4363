@@ -32,7 +32,8 @@ public class CourseSelection extends AppCompatActivity {
     private String selectedChoice = "";
     public Button run;
     public TextView message;
-    public ArrayList<String> arrayDescriptions = new ArrayList<String>();;
+    public ArrayList<String> arrayDescriptions = new ArrayList<String>();
+    public ArrayList<String> arrayCourseID = new ArrayList<String>();
     //private String description = "This is the course description";
 
     public String courseid, title1;
@@ -124,6 +125,7 @@ public class CourseSelection extends AppCompatActivity {
 
                         courselist1.add(rs.getString("CourseID") + " - " + rs.getString("Title"));
                         arrayDescriptions.add(rs.getString("Description"));
+                        arrayCourseID.add(rs.getString("CourseID"));
 
                     }
                     if(rs.next())
@@ -186,6 +188,19 @@ public class CourseSelection extends AppCompatActivity {
     }
     public void CourseDetails (View v){
 
+        //Array for CourseID to used in the query for prerequisites
+        ListView listView1 = (ListView) findViewById(R.id.courselist);
+        ArrayList<String> toSend1 = new ArrayList<String>();
+        String c ="";
+        for(int i=0 ; i<arrayAdapterCourse.getCount() ; i++){
+            if (listView1.isItemChecked(i)){
+                c = c + arrayCourseID.get(i);
+                toSend1.add(c);
+
+            }
+        }
+
+        //Array for CourseID, Title, and Description to pass to CourseDetails for displaying onto new activity
         ListView listView = (ListView) findViewById(R.id.courselist);
         ArrayList<String> toSend = new ArrayList<String>();
         String a ="";
@@ -196,10 +211,11 @@ public class CourseSelection extends AppCompatActivity {
 
             }
         }
-        Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
         Intent goToCourseDetails = new Intent(getApplicationContext(), CourseDetails.class);
         //this is how you send multiple strings to next activity
         goToCourseDetails.putStringArrayListExtra("toSend", toSend);
+        goToCourseDetails.putStringArrayListExtra("toSend1", toSend1);
         startActivity(goToCourseDetails);
     }
     //View Plan button functionality will take you to Degree Plan to view courses you have added there

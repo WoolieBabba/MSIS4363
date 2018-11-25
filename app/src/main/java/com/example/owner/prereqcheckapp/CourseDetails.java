@@ -29,12 +29,13 @@ public class CourseDetails extends AppCompatActivity {
     // Declaring connection variables
     public Connection con;
     public String b = "";
+    public String c = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_details);
-
+        //Display CourseID, Title, and Description onto activity
         TextView a = (TextView) findViewById(R.id.textView12);
         Intent intent =getIntent();
         //this is how you receive an arraylist of strings from intent.
@@ -44,8 +45,15 @@ public class CourseDetails extends AppCompatActivity {
         }
         a.setText(b);
 
-
-
+        //CourseID pulled from CourseSelection to be used in query for prerequisites
+       TextView d = (TextView) findViewById(R.id.textView14);
+        Intent intent1 =getIntent();
+        //this is how you receive an arraylist of strings from intent.
+        ArrayList<String> rec1 = intent1.getStringArrayListExtra("toSend1");
+        for(int i=0 ; i<rec1.size() ; i++){
+            c = c + rec1.get(i);
+        }
+       d.setText(c);
 
 
         // Getting values from button, texts and progress bar
@@ -68,7 +76,7 @@ public class CourseDetails extends AppCompatActivity {
     {
         String z = "";
         Boolean isSuccess = false;
-        String name1 = "";
+        String prereq = "";
 
 
         protected void onPreExecute()
@@ -85,8 +93,7 @@ public class CourseDetails extends AppCompatActivity {
             {
                 //  message = (TextView) findViewById(R.id.textView2);
                 //  message.setText(name1);
-                Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
-                startActivity(goToDegreePlan);
+
             }
         }
         @Override
@@ -103,12 +110,14 @@ public class CourseDetails extends AppCompatActivity {
                 else
                 {
                     // Change below query according to your own database.
-                    String query = "select * from student";
+
+
+                    String query = "select PrerequisiteID from prerequisite where CourseID ='"+ c +"'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if(rs.next())
                     {
-                        name1 = rs.getString("lastName"); //Name is the string label of a column in database, read through the select query
+                        prereq = rs.getString("PrerequisiteID"); //Name is the string label of a column in database, read through the select query
                         z = "query successful";
                         isSuccess=true;
                         con.close();
