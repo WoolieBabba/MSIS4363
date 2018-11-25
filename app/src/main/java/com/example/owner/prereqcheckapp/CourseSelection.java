@@ -118,8 +118,8 @@ public class CourseSelection extends AppCompatActivity {
                     courselist1 = new ArrayList<String>();
                     while (rs.next()){
 
-                        courselist1.add(rs.getString("CourseID"));
-                        courselist1.add(rs.getString("Title"));
+                        courselist1.add(rs.getString("CourseID") + "- " + rs.getString("Title"));
+                       // courselist1.add();
                     }
                     if(rs.next())
                     {
