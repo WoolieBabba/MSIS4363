@@ -180,10 +180,22 @@ public class CourseSelection extends AppCompatActivity {
         return connection;
     }
     public void CourseDetails (View v){
+
+        ListView listView = (ListView) findViewById(R.id.courselist);
+        ArrayList<String> toSend = new ArrayList<String>();
+        String a ="";
+        for(int i=0 ; i<arrayAdapterCourse.getCount() ; i++){
+            if (listView.isItemChecked(i)){
+
+                a = a + arrayListCourse.get(i);
+                toSend.add(arrayListCourse.get(i));
+
+            }
+        }
+        Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
         Intent goToCourseDetails = new Intent(getApplicationContext(), CourseDetails.class);
-       // ArrayList<String> coursedetails = new ArrayList<String>();
-       // Intent i = getIntent();
-        //ArrayList<String> coursedetails = i.getStringArrayListExtra("CourseID");
+        //this is how you send multiple strings to next activity
+        goToCourseDetails.putStringArrayListExtra("toSend", toSend);
         startActivity(goToCourseDetails);
     }
     //View Plan button functionality will take you to Degree Plan to view courses you have added there

@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class CourseDetails extends AppCompatActivity {
     // Declaring layout button, edit texts
@@ -27,11 +28,25 @@ public class CourseDetails extends AppCompatActivity {
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
+    public String b = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_details);
+
+        TextView a = (TextView) findViewById(R.id.textView12);
+        Intent intent =getIntent();
+        //this is how you receive an arraylist of strings from intent.
+        ArrayList<String> rec = intent.getStringArrayListExtra("toSend");
+        for(int i=0 ; i<rec.size() ; i++){
+            b = b + String.valueOf(i) + rec.get(i);
+        }
+        a.setText(b);
+
+
+
+
 
         // Getting values from button, texts and progress bar
         run = (Button) findViewById(R.id.btnAddPlan);

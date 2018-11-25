@@ -29,14 +29,10 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextCourseDetails"
+        <TextView
+            android:id="@+id/textView12"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType=""
-            android:text="Name" />
+            android:layout_height="200dp" />
 
         <TextView
             android:id="@+id/textView13"
@@ -50,14 +46,10 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextPrereq"
+        <TextView
+            android:id="@+id/textView14"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:layout_height="200dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
