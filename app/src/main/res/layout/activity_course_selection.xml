@@ -59,25 +59,41 @@
                 android:layout_weight="1"
                 android:background="@drawable/buttons"
                 android:onClick="CourseList"
-                android:text="GET COURSE LIST"
+                android:text="GET COURSES"
                 android:textColor="?android:attr/colorBackground"
-                android:textSize="18sp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnGetDetails"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttons"
+                android:onClick="CourseDetails"
+                android:text="GET DETAILS"
+                android:textColor="?android:attr/colorBackground"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnViewPlan"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/buttons"
                 android:onClick="ViewPlan"
                 android:text="VIEW PLAN"
                 android:textColor="?android:attr/colorBackground"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
