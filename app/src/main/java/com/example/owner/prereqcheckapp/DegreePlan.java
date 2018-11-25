@@ -147,5 +147,16 @@ public class DegreePlan extends AppCompatActivity {
         }
         return connection;
     }
+
+    public void ViewCourses(View v) {
+
+        Intent goToCourseSelect = new Intent(getApplicationContext(), CourseSelection.class);
+        startActivity(goToCourseSelect);
+    }
+    public void ViewHistory(View v) {
+
+        Intent goToHistory = new Intent(getApplicationContext(), History.class);
+        startActivity(goToHistory);
+    }
 }
 //

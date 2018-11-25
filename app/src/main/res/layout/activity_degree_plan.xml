@@ -48,7 +48,7 @@
         <ListView
             android:id="@+id/degreelist"
             android:layout_width="match_parent"
-            android:layout_height="325dp" />
+            android:layout_height="275dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,13 +62,45 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="1dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@drawable/buttons"
             android:onClick="AddHistory"
             android:text="ADD ALL TO HISTORY"
+            android:textColor="?android:attr/colorBackground"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnViewHistory"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttons"
+            android:onClick="ViewHistory"
+            android:text="VIEW HISTORY"
+            android:textColor="?android:attr/colorBackground"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnGoToCourseSelection"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttons"
+            android:onClick="ViewCourses"
+            android:text="COURSE SELECTION"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />

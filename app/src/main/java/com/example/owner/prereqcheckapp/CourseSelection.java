@@ -74,6 +74,7 @@ public class CourseSelection extends AppCompatActivity {
         String name1 = "";
         String cID = "";
         String title1 = "";
+        String description = "";
 
 
         protected void onPreExecute()
@@ -111,22 +112,22 @@ public class CourseSelection extends AppCompatActivity {
                 else
                 {
                     // Change below query according to your own database.
-                    String query = "select CourseID, Title from course";
+                    String query = "select CourseID, Title, Description from course";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     //build an ArrayList to hold results
                     courselist1 = new ArrayList<String>();
                     while (rs.next()){
 
-                        courselist1.add(rs.getString("CourseID") + "- " + rs.getString("Title"));
+                        courselist1.add(rs.getString("CourseID") + " - " + rs.getString("Title"));
                        // courselist1.add();
                     }
                     if(rs.next())
                     {
-                        cID = rs.getString("CourseID"); //Name is the string label of a column in database, read through the select query
-                        title1 = rs.getString("Title"); //Name is the string label of a column in database, read through the select query
+                        cID = rs.getString("CourseID"); //CourseID is the string label of a column in database, read through the select query
+                        title1 = rs.getString("Title"); //Title is the string label of a column in database, read through the select query
 
-                        z = "query successful";
+                        z = "Click Get Courses Button to Begin";
                         isSuccess=true;
                         con.close();
 

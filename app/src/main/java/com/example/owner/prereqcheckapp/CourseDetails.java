@@ -40,7 +40,7 @@ public class CourseDetails extends AppCompatActivity {
         //this is how you receive an arraylist of strings from intent.
         ArrayList<String> rec = intent.getStringArrayListExtra("toSend");
         for(int i=0 ; i<rec.size() ; i++){
-            b = b + String.valueOf(i) + rec.get(i);
+            b = b + rec.get(i);
         }
         a.setText(b);
 
@@ -49,7 +49,7 @@ public class CourseDetails extends AppCompatActivity {
 
 
         // Getting values from button, texts and progress bar
-        run = (Button) findViewById(R.id.btnAddPlan);
+        run = (Button) findViewById(R.id.btnMoreDetails);
 
 
         run.setOnClickListener(new View.OnClickListener()
@@ -57,14 +57,14 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                AddPlan addPlan = new AddPlan();// this is the Asynctask, which is used to process in background to reduce load on app process
-                addPlan.execute("");
+                MoreDetails moreDetails = new MoreDetails();// this is the Asynctask, which is used to process in background to reduce load on app process
+                moreDetails.execute("");
             }
         });
         //End Setting up the function when button login is clicked
     }
 
-    public class AddPlan extends AsyncTask<String,String,String>
+    public class MoreDetails extends AsyncTask<String,String,String>
     {
         String z = "";
         Boolean isSuccess = false;
@@ -161,6 +161,12 @@ public class CourseDetails extends AppCompatActivity {
             Log.e("error here 3 : ", e.getMessage());
         }
         return connection;
+    }
+
+    public void AddPlan(View v) {
+
+        Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
+        startActivity(goToDegreePlan);
     }
     public void btnHistory(View v) {
 
