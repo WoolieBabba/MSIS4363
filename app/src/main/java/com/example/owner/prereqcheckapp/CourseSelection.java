@@ -32,6 +32,8 @@ public class CourseSelection extends AppCompatActivity {
     private String selectedChoice = "";
     public Button run;
     public TextView message;
+    public ArrayList<String> arrayDescriptions = new ArrayList<String>();;
+    //private String description = "This is the course description";
 
     public String courseid, title1;
     // End Declaring layout button, edit texts
@@ -77,6 +79,7 @@ public class CourseSelection extends AppCompatActivity {
         String description = "";
 
 
+
         protected void onPreExecute()
         {
 
@@ -120,13 +123,14 @@ public class CourseSelection extends AppCompatActivity {
                     while (rs.next()){
 
                         courselist1.add(rs.getString("CourseID") + " - " + rs.getString("Title"));
-                       // courselist1.add();
+                        arrayDescriptions.add(rs.getString("Description"));
+
                     }
                     if(rs.next())
                     {
-                        cID = rs.getString("CourseID"); //CourseID is the string label of a column in database, read through the select query
-                        title1 = rs.getString("Title"); //Title is the string label of a column in database, read through the select query
-
+                        //cID = rs.getString("CourseID"); //CourseID is the string label of a column in database, read through the select query
+                        //title1 = rs.getString("Title"); //Title is the string label of a column in database, read through the select query
+                        //description = rs.getString("Description");
                         z = "Click Get Courses Button to Begin";
                         isSuccess=true;
                         con.close();
@@ -187,9 +191,8 @@ public class CourseSelection extends AppCompatActivity {
         String a ="";
         for(int i=0 ; i<arrayAdapterCourse.getCount() ; i++){
             if (listView.isItemChecked(i)){
-
-                a = a + arrayListCourse.get(i);
-                toSend.add(arrayListCourse.get(i));
+                a = a + arrayListCourse.get(i) + "\n\n" + arrayDescriptions.get(i);
+                toSend.add(a);
 
             }
         }
