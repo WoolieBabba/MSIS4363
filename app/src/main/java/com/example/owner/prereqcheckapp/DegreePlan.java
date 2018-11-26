@@ -27,6 +27,7 @@ public class DegreePlan extends AppCompatActivity {
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
+   // public String loginUser = getIntent().getStringExtra("LoginUser");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +157,7 @@ public class DegreePlan extends AppCompatActivity {
     public void ViewHistory(View v) {
 
         Intent goToHistory = new Intent(getApplicationContext(), History.class);
+        //goToHistory.putExtra("LoginUser", loginUser);
         startActivity(goToHistory);
     }
 }

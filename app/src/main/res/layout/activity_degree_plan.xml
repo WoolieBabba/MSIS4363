@@ -39,7 +39,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/buttons"
             android:gravity="center_vertical"
-            android:paddingLeft="100dp"
+            android:paddingLeft="90dp"
             android:text="MY DEGREE PLAN"
             android:textColor="?android:attr/colorBackground"
             android:textSize="24sp"

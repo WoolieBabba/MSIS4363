@@ -24,7 +24,7 @@
             android:background="@drawable/buttons"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="SELECT COURSE BELOW:\nSelecting a course will display details"
+            android:text=""
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />

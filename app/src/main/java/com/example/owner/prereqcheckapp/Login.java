@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +30,10 @@ public class Login extends AppCompatActivity {
 
     // Declaring connection variables
     public Connection con;
-    String un,pass,db,ip;
-    ArrayList<ClipData.Item> userList;
+    // Declaring ArrayLists
+    public ArrayList<String> arrayUsers = new ArrayList<String>();
+    public ArrayList<String> arrayPass = new ArrayList<String>();
 
-    //End Declaring connection variables
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,17 +57,16 @@ public void onClick(View v)
         //End Setting up the function when button login is clicked
         }
 
-public class CheckLogin extends AsyncTask<String,String,String>
+public class CheckLogin extends AsyncTask<String, String, String>
 {
     String z = "";
     Boolean isSuccess = false;
-    String name1 = "";
 
-    EditText userName = (EditText) findViewById(R.id.userName);
-    EditText password = (EditText) findViewById(R.id.password);
+    EditText userName1 = (EditText) findViewById(R.id.userName);
+    EditText password1 = (EditText) findViewById(R.id.password);
 
-    String user1 = userName.getText().toString().toLowerCase();
-    String pass = password.getText().toString();
+    String user1 = userName1.getText().toString().toLowerCase();
+    String pass = password1.getText().toString();
 
 
 
@@ -80,16 +78,41 @@ public class CheckLogin extends AsyncTask<String,String,String>
     }
 
     @Override
-    protected void onPostExecute(String r)
-    {
-       // progressBar.setVisibility(View.GONE);
-        Toast.makeText(Login.this, r, Toast.LENGTH_LONG).show();
-        if(isSuccess)
-        {
-            Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
-            startActivity(goToCourseSelection);
+    protected void onPostExecute(String r) {
+
+        // progressBar.setVisibility(View.GONE);
+        // Toast.makeText(Login.this, r, Toast.LENGTH_LONG).show();
+
+        //Check if user provided input for username
+        if (!user1.equals("")) {
+
+            //User Authentication
+            for (String i : arrayUsers) {
+
+                //Check if there is a record in the database that corresponds to the value user provided
+                if (user1.equals(i)) {
+
+                    //Password Authentication
+                    //Check if identified user provided correct password
+                    if (pass.equals(arrayPass.get(arrayUsers.indexOf(i)))) {
+
+                        //Redirect to Program selection page
+                        Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
+                        goToCourseSelection.putExtra("LoginUser", i);
+                        startActivity(goToCourseSelection);
+
+                        //Notify user that password is wrong
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
         }
     }
+
+
+
     @Override
     protected String doInBackground(String... params)
     {
@@ -104,15 +127,24 @@ public class CheckLogin extends AsyncTask<String,String,String>
             else
             {
 
-                userList = new ArrayList<ClipData.Item>();
+
                 // Change below query according to your own database.
                 String query = "select Username, Password from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()){
+                    arrayUsers.add(rs.getString("Username"));
+                    arrayPass.add(rs.getString("Password"));
+                }
+
                 if(rs.next())
                 {
-                    user1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
-                    pass = rs.getString("Password");
+
+                   // user1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                   // pass = rs.getString("Password");
+
+
+
                     
   //                  if (enteredUser.getText().toString() != "") {
    //                     if (enteredUser.getText().toString() == u &&
@@ -182,3 +214,4 @@ public class CheckLogin extends AsyncTask<String,String,String>
     }
 
 }
+

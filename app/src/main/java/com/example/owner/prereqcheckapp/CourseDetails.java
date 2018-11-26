@@ -30,11 +30,13 @@ public class CourseDetails extends AppCompatActivity {
     public Connection con;
     public String b = "";
     public String c = "";
+   // public String loginUser = getIntent().getStringExtra("LoginUser");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_details);
+
         //Display CourseID, Title, and Description onto activity
         TextView a = (TextView) findViewById(R.id.textView12);
         Intent intent =getIntent();
@@ -46,14 +48,13 @@ public class CourseDetails extends AppCompatActivity {
         a.setText(b);
 
         //CourseID pulled from CourseSelection to be used in query for prerequisites
-       TextView d = (TextView) findViewById(R.id.textView14);
         Intent intent1 =getIntent();
         //this is how you receive an arraylist of strings from intent.
         ArrayList<String> rec1 = intent1.getStringArrayListExtra("toSend1");
         for(int i=0 ; i<rec1.size() ; i++){
-            c = c + rec1.get(i);
+            c = rec1.get(i);
         }
-       d.setText(c);
+
 
 
         // Getting values from button, texts and progress bar
@@ -112,7 +113,7 @@ public class CourseDetails extends AppCompatActivity {
                     // Change below query according to your own database.
 
 
-                    String query = "select PrerequisiteID from prerequisite where CourseID ='"+ c +"'";
+                    String query = "select PrerequisiteID from prerequisite where CourseID =" + c;
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
                     if(rs.next())
@@ -175,11 +176,13 @@ public class CourseDetails extends AppCompatActivity {
     public void AddPlan(View v) {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
+       // goToDegreePlan.putExtra("LoginUser", loginUser);
         startActivity(goToDegreePlan);
     }
     public void btnHistory(View v) {
 
         Intent goToHistory = new Intent(getApplicationContext(), History.class);
+       // goToHistory.putExtra("LoginUser", loginUser);
         startActivity(goToHistory);
     }
 }
