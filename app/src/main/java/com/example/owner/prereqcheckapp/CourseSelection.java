@@ -34,7 +34,7 @@ public class CourseSelection extends AppCompatActivity {
     public TextView message;
     public ArrayList<String> arrayDescriptions = new ArrayList<String>();
     public ArrayList<String> arrayCourseID = new ArrayList<String>();
-    public String sID1;
+    public Integer sID;
     //private String description = "This is the course description";
 
     public String courseid, title1;
@@ -49,8 +49,8 @@ public class CourseSelection extends AppCompatActivity {
 
         //this is how you receive StudentID from the Login Activity to this activity
         Intent intent1 = getIntent();
-        String sID = intent1.getStringExtra("sID");
-        sID1 = sID;
+        sID = intent1.getIntExtra("sID", 0);
+        //sID1 = sID;
 
        arrayListCourse = new ArrayList<String>();
        arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
@@ -58,22 +58,15 @@ public class CourseSelection extends AppCompatActivity {
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); //this helps you add radio buttons to the list
         listView.setAdapter(arrayAdapterCourse);
        //  Getting values from button, texts and progress bar
-        run = (Button) findViewById(R.id.btnGetCourses);
+        //run = (Button) findViewById(R.id.btnGetCourses);
 
 
 
        // run.setOnClickListener(new MenuItem.OnMenuItemClickListener()
         // run.setOnClickListener(new MenuItem.OnMenuItemClickListener()
-        run.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                CourseDisplay courseDisplay = new CourseDisplay();// this is the Asynctask, which is used to process in background to reduce load on app process
-                courseDisplay.execute("");
-            }
-        });
-        //End Setting up the function when button login is clicked
+        CourseDisplay courseDisplay = new CourseDisplay();// this is the Asynctask, which is used to process in background to reduce load on app process
+        courseDisplay.execute("");
+        //End Setting up the function when button is clicked
     }
 
     public class CourseDisplay extends AsyncTask<String,String,ArrayList<String>>
@@ -222,14 +215,14 @@ public class CourseSelection extends AppCompatActivity {
         //this is how you send multiple strings to next activity
         goToCourseDetails.putStringArrayListExtra("toSend", toSend);
         goToCourseDetails.putStringArrayListExtra("toSend1", toSend1);
-        goToCourseDetails.putExtra("sID", sID1);
+        goToCourseDetails.putExtra("sID", sID);
         startActivity(goToCourseDetails);
     }
     //View Plan button functionality will take you to Degree Plan to view courses you have added there
     public void ViewPlan(View v) {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
-        goToDegreePlan.putExtra("sID", sID1);
+        goToDegreePlan.putExtra("sID", sID);
         startActivity(goToDegreePlan);
     }
 }

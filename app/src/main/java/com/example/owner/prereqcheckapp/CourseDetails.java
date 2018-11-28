@@ -113,10 +113,11 @@ public class CourseDetails extends AppCompatActivity {
                     // Change below query according to your own database.
 
 
-                    String query = "select PrerequisiteID from prerequisite where CourseID =" + c;
+                    String query = "select PrerequisiteID from prerequisite where CourseID = '" + c + "'";
+                    Log.i("query", query);
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
-                    if(rs.next())
+                    while(rs.next())
                     {
                         prereq = rs.getString("PrerequisiteID"); //Name is the string label of a column in database, read through the select query
                         z = "query successful";
@@ -124,6 +125,7 @@ public class CourseDetails extends AppCompatActivity {
                         con.close();
 
                     }
+                    if(rs.next()){ }
                     else
                     {
                         z = "Invalid Query!";
