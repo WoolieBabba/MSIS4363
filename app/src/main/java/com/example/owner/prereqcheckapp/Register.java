@@ -19,12 +19,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
-    public EditText firstName, lastName, userName, password;
+    ArrayList<String> userList;
+    public boolean doesStudentIDExist = false;
     // End Declaring layout button, edit texts
     // Declaring connection variables
     public Connection con;
@@ -50,85 +52,103 @@ public class Register extends AppCompatActivity {
         //End Setting up the function when button login is clicked
     }
 
-    public class InsertRegister extends AsyncTask<String,String,String>
-    {
+    public class InsertRegister extends AsyncTask<String,String,String> {
         String z = "";
         Boolean isSuccess = false;
-        String name1 = "";
-        String fName = "";
-        String enterLast = "";
-        String enterUser = "";
-        String enterPass = "";
+        EditText enteredStudentID = (EditText) findViewById(R.id.studentID);
+        EditText enteredFirst = (EditText) findViewById(R.id.firstName);
+        EditText enteredLast = (EditText) findViewById(R.id.lastName);
+        EditText enteredUser = (EditText) findViewById(R.id.userNameR);
+        EditText enteredPass = (EditText) findViewById(R.id.passwordR);
 
+        String sID = enteredStudentID.getText().toString();
+        String fname = enteredFirst.getText().toString();
+        String lname = enteredLast.getText().toString();
+        String user = enteredUser.getText().toString();
+        String pass = enteredPass.getText().toString();
 
-        protected void onPreExecute()
-        {
-            // EditText enteredFirst = (EditText) findViewById(R.id.firstName);
-            // EditText enteredLast = (EditText) findViewById(R.id.lastName);
-           //  EditText enteredUser = (EditText) findViewById(R.id.userNameR);
-           //  EditText enteredPass = (EditText) findViewById(R.id.passwordR);
-
-            // String fname = firstName.getText().toString();
-            // String lname = lastName.getText().toString();
+        protected void onPreExecute() {
 
         }
 
         @Override
-        protected void onPostExecute(String r)
-        {
+        protected void onPostExecute(String r) {
 
-            Toast.makeText(Register.this, r, Toast.LENGTH_LONG).show();
-            if(isSuccess)
-            {
-              //  message = (TextView) findViewById(R.id.textView2);
-              //  message.setText(name1);
+            Toast.makeText(getApplicationContext(), "You have successfully registered!", Toast.LENGTH_SHORT).show();
+          //  if (isSuccess) {
+
                 Intent goToLogin = new Intent(getApplicationContext(), Login.class);
                 startActivity(goToLogin);
-            }
+           // }
         }
-        @Override
-        protected String doInBackground(String... params)
-        {
 
-            try
-            {
+        @Override
+        protected String doInBackground(String... params) {
+
+             userList = new ArrayList<String>();
+
+            try {
                 con = connectionclass();        // Connect to database
-                if (con == null)
-                {
+                if (con == null) {
                     z = "Check Your Internet Access!";
-                }
-                else
-                {
-                    // Change below query according to your own database.
-                    String query = "select * from student";
+                } else {
+                    String query = "Select StudentID from student";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
-                    if(rs.next())
-                    {
-                        name1 = rs.getString("Lastname"); //Name is the string label of a column in database, read through the select query
-                        z = "query successful";
-                        isSuccess=true;
-                        con.close();
 
-                    }
-                    else
-                    {
-                        z = "Invalid Query!";
-                        isSuccess = false;
+                    if (rs.next()) {
+                        //sets the userList Array to all StudentID from the student table
+                        userList.add(rs.getString("StudentID"));
+
+                        //Check if a person with the same username exists
+                        for (String i : userList) {
+                            if (sID.equals(i)) {
+                                doesStudentIDExist = true;
+                            }
+
+                        }
+                        if (!doesStudentIDExist) {
+                            // Change below query according to your own database.
+                            String query2 = "Insert into student(StudentID, Username, Password, Firstname, Lastname) ";
+                            query2 += " values('" + sID + "','" + user + "', '" + pass + "', '" + fname + "', '" + lname + "')";
+                            Statement stmt2 = con.createStatement();
+                            ResultSet rs2 = stmt2.executeQuery(query2);
+
+                            if (rs2.next()) {
+
+                                //sID = rs.getString("StudentID");
+                                // user = rs.getString("Username");
+                                // pass = rs.getString("Password");
+                                // fname = rs.getString("Firstname");
+                                // lname = rs.getString("Lastname");
+
+                                z = "query successful";
+                                isSuccess = true;
+                                con.close();
+
+                            } else {
+                                z = "Invalid Query!";
+                                isSuccess = false;
+                            }
+                        }
+                        else{
+                            doesStudentIDExist = false;
+                            Toast.makeText(getApplicationContext(), "An account with this Student ID already exists", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                isSuccess = false;
-                z = ex.getMessage();
+            catch(Exception ex)
+                {
+                    isSuccess = false;
+                    z = ex.getMessage();
 
-                Log.d ("sql error", z);
+                    Log.d("sql error", z);
+                }
+
+                return z;
             }
-
-            return z;
         }
-    }
 
 
     @SuppressLint("NewApi")

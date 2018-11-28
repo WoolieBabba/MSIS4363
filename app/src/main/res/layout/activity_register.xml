@@ -34,6 +34,33 @@
             android:orientation="vertical"></LinearLayout>
 
         <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".07"
+            android:gravity="center"
+            android:text="STUDENT ID"
+            android:textColor="?android:attr/colorActivatedHighlight"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/studentID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight=".07"
+            android:background="@drawable/textfields"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="?android:attr/colorActivatedHighlight"
+            android:textSize="30sp" />
+
+        <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,9 +81,9 @@
             android:background="@drawable/textfields"
             android:ems="10"
             android:inputType="textPersonName"
-            android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="5dp"
+            android:paddingBottom="5dp"
             android:textColor="?android:attr/colorActivatedHighlight"
             android:textSize="30sp" />
 
@@ -140,24 +167,6 @@
             android:paddingRight="5dp"
             android:textColor="?android:attr/colorActivatedHighlight"
             android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".07"
-            android:gravity="center"
-            android:text="SELECT DEGREE PLAN"
-            android:textColor="?android:attr/colorActivatedHighlight"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".07"
-            android:background="@drawable/textfields" />
 
         <Button
             android:id="@+id/btnregisterStudent"
