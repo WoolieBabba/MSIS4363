@@ -34,7 +34,7 @@ public class CourseSelection extends AppCompatActivity {
     public TextView message;
     public ArrayList<String> arrayDescriptions = new ArrayList<String>();
     public ArrayList<String> arrayCourseID = new ArrayList<String>();
-    public String loginUser1;
+    public String sID1;
     //private String description = "This is the course description";
 
     public String courseid, title1;
@@ -47,12 +47,10 @@ public class CourseSelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_selection);
 
-        TextView a = (TextView) findViewById(R.id.textView9);
-        Intent intent = getIntent();
-        //this is how you receive and print the Username from the Login Activity to this activity
-        String loginUser = intent.getStringExtra("LoginUser");
-        a.setText(loginUser + ": SELECT COURSE BELOW:\nSelecting a course will display details");
-        loginUser1 = loginUser;
+        //this is how you receive StudentID from the Login Activity to this activity
+        Intent intent1 = getIntent();
+        String sID = intent1.getStringExtra("sID");
+        sID1 = sID;
 
        arrayListCourse = new ArrayList<String>();
        arrayAdapterCourse = new ArrayAdapter<String>(this, R.layout.courserow, R.id.courseRow, arrayListCourse);
@@ -224,14 +222,14 @@ public class CourseSelection extends AppCompatActivity {
         //this is how you send multiple strings to next activity
         goToCourseDetails.putStringArrayListExtra("toSend", toSend);
         goToCourseDetails.putStringArrayListExtra("toSend1", toSend1);
-        goToCourseDetails.putExtra("LoginUser", loginUser1);
+        goToCourseDetails.putExtra("sID", sID1);
         startActivity(goToCourseDetails);
     }
     //View Plan button functionality will take you to Degree Plan to view courses you have added there
     public void ViewPlan(View v) {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
-        goToDegreePlan.putExtra("LoginUser", loginUser1);
+        goToDegreePlan.putExtra("sID", sID1);
         startActivity(goToDegreePlan);
     }
 }

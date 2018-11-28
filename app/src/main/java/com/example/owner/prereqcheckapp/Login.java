@@ -26,11 +26,12 @@ public class Login extends AppCompatActivity {
     // Declaring layout button, edit texts
     public Button run;
     public TextView message;
-    public String u,p;
+    public String u,p,sID;
 
     // Declaring connection variables
     public Connection con;
     // Declaring ArrayLists
+    public ArrayList<String> arrayStudentID = new ArrayList<String>();
     public ArrayList<String> arrayUsers = new ArrayList<String>();
     public ArrayList<String> arrayPass = new ArrayList<String>();
 
@@ -98,7 +99,7 @@ public class CheckLogin extends AsyncTask<String, String, String>
 
                         //Redirect to Program selection page
                         Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
-                        goToCourseSelection.putExtra("LoginUser", i);
+                        goToCourseSelection.putExtra("sID", sID);
                         startActivity(goToCourseSelection);
 
                         //Notify user that password is wrong
@@ -129,7 +130,7 @@ public class CheckLogin extends AsyncTask<String, String, String>
 
 
                 // Change below query according to your own database.
-                String query = "select Username, Password from student";
+                String query = "select StudentID, Username, Password from student";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()){
@@ -140,7 +141,7 @@ public class CheckLogin extends AsyncTask<String, String, String>
                 if(rs.next())
                 {
 
-                   // user1 = rs.getString("Username"); //Name is the string label of a column in database, read through the select query
+                    sID = rs.getString("StudentID"); //Name is the string label of a column in database, read through the select query
                    // pass = rs.getString("Password");
 
 
