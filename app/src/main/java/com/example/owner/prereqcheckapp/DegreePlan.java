@@ -45,7 +45,14 @@ public class DegreePlan extends AppCompatActivity {
         // Getting values from button, texts and progress bar
         run = (Button) findViewById(R.id.btnAddHistory);
 
+ /*       run.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
+            }
+        });*/
         LoadPlan plan = new LoadPlan();// this is the Asynctask, which is used to process in background to reduce load on app process
         plan.execute("");
         arrayListCourse = new ArrayList<String>();
@@ -132,7 +139,10 @@ public class DegreePlan extends AppCompatActivity {
         }
     }
 
+   /* public class AddAllToPlan extends AsyncTask<String,String,null>
+    {
 
+    }*/
     @SuppressLint("NewApi")
     public Connection connectionclass()
     {
@@ -161,16 +171,10 @@ public class DegreePlan extends AppCompatActivity {
         }
         return connection;
     }
-
-    public void ViewCourses(View v) {
-
-        Intent goToCourseSelect = new Intent(getApplicationContext(), CourseSelection.class);
-        startActivity(goToCourseSelect);
-    }
     public void ViewHistory(View v) {
 
         Intent goToHistory = new Intent(getApplicationContext(), History.class);
-        //goToHistory.putExtra("LoginUser", loginUser);
+        goToHistory.putExtra("sID", sID);
         startActivity(goToHistory);
     }
 }
