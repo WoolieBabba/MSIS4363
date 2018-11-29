@@ -181,6 +181,7 @@ public class CourseDetails extends AppCompatActivity {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
        // goToDegreePlan.putExtra("LoginUser", loginUser);
+        goToDegreePlan.putExtra("sID", sID);
         startActivity(goToDegreePlan);
     }
     public void btnHistory(View v) {
