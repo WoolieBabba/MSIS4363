@@ -24,7 +24,7 @@
             android:background="@drawable/buttons"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text=""
+            android:text="TO VIEW COURSE DETAILS\nSelect course and tap the Get Details button"
             android:textColor="?android:attr/colorBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
