@@ -189,32 +189,17 @@ public class CourseSelection extends AppCompatActivity {
 
         //Array for CourseID to used in the query for prerequisites
         ListView listView1 = (ListView) findViewById(R.id.courselist);
-        ArrayList<String> toSend1 = new ArrayList<String>();
+        String courseToSend = "";
         String c ="";
         for(int i=0 ; i<arrayAdapterCourse.getCount() ; i++){
             if (listView1.isItemChecked(i)){
-                c = c + arrayCourseID.get(i);
-                toSend1.add(c);
-
-            }
-        }
-
-        //Array for CourseID, Title, and Description to pass to CourseDetails for displaying onto new activity
-        ListView listView = (ListView) findViewById(R.id.courselist);
-        ArrayList<String> toSend = new ArrayList<String>();
-        String a ="";
-        for(int i=0 ; i<arrayAdapterCourse.getCount() ; i++){
-            if (listView.isItemChecked(i)){
-                a = a + arrayListCourse.get(i) + "\n\n" + arrayDescriptions.get(i);
-                toSend.add(a);
-
+                courseToSend = arrayCourseID.get(i);
             }
         }
        // Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
         Intent goToCourseDetails = new Intent(getApplicationContext(), CourseDetails.class);
-        //this is how you send multiple strings to next activity
-        goToCourseDetails.putStringArrayListExtra("toSend", toSend);
-        goToCourseDetails.putStringArrayListExtra("toSend1", toSend1);
+        goToCourseDetails.putExtra("course", courseToSend);
+        Log.i("course", courseToSend);
         goToCourseDetails.putExtra("sID", sID);
         startActivity(goToCourseDetails);
     }

@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,6 +34,9 @@ public class CourseDetails extends AppCompatActivity {
     public String b = "";
     public String c = "";
    // public String loginUser = getIntent().getStringExtra("LoginUser");
+   public ArrayList<String> arrayPrereqs = new ArrayList<String>();
+   public String course;
+   public Integer sID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +44,22 @@ public class CourseDetails extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         //Display CourseID, Title, and Description onto activity
-        TextView a = (TextView) findViewById(R.id.textView12);
         Intent intent =getIntent();
         //this is how you receive an arraylist of strings from intent.
-        ArrayList<String> rec = intent.getStringArrayListExtra("toSend");
-        for(int i=0 ; i<rec.size() ; i++){
-            b = b + rec.get(i);
-        }
-        a.setText(b);
-
-        //CourseID pulled from CourseSelection to be used in query for prerequisites
-        Intent intent1 =getIntent();
-        //this is how you receive an arraylist of strings from intent.
-        ArrayList<String> rec1 = intent1.getStringArrayListExtra("toSend1");
-        for(int i=0 ; i<rec1.size() ; i++){
-            c = rec1.get(i);
-        }
-
+        course = intent.getStringExtra("course");
+        sID = intent.getIntExtra("sID", 0);
+        TextView courseTitle = (TextView) findViewById(R.id.textView11);
+        courseTitle.setText(courseTitle.getText() + " " + course);
 
 
         // Getting values from button, texts and progress bar
-        run = (Button) findViewById(R.id.btnMoreDetails);
 
-
-        run.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MoreDetails moreDetails = new MoreDetails();// this is the Asynctask, which is used to process in background to reduce load on app process
-                moreDetails.execute("");
-            }
-        });
+        MoreDetails moreDetails = new MoreDetails();// this is the Asynctask, which is used to process in background to reduce load on app process
+        moreDetails.execute("");
         //End Setting up the function when button login is clicked
     }
 
-    public class MoreDetails extends AsyncTask<String,String,String>
+    public class MoreDetails extends AsyncTask<String,String,ArrayList<String>>
     {
         String z = "";
         Boolean isSuccess = false;
@@ -86,10 +72,9 @@ public class CourseDetails extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String r)
+        protected void onPostExecute(ArrayList<String> r)
         {
 
-            Toast.makeText(CourseDetails.this, r, Toast.LENGTH_LONG).show();
             if(isSuccess)
             {
                 //  message = (TextView) findViewById(R.id.textView2);
@@ -98,9 +83,9 @@ public class CourseDetails extends AppCompatActivity {
             }
         }
         @Override
-        protected String doInBackground(String... params)
+        protected ArrayList<String> doInBackground(String... params)
         {
-
+            ArrayList<String> courselist1 = new ArrayList<String>();
             try
             {
                 con = connectionclass();        // Connect to database
@@ -113,13 +98,30 @@ public class CourseDetails extends AppCompatActivity {
                     // Change below query according to your own database.
 
 
-                    String query = "select PrerequisiteID from prerequisite where CourseID = '" + c + "'";
+                    String detailsQuery = "select Title, Description, CreditHrs from course where CourseID = '" + course + "';";
+                    String query = "select * from prerequisite;";
                     Log.i("query", query);
                     Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(query);
+                    ResultSet rs = stmt.executeQuery(detailsQuery);
+                    rs.next();
+                    Log.i("Description", rs.getString("Description"));
+                    TextView description = (TextView) findViewById(R.id.textView12);
+                    TextView prereqs = (TextView) findViewById(R.id.textView14);
+                    description.setText(rs.getString("Title") + "\n\n"+ rs.getString("Description")
+                        + "\n\n" + "Credit Hours: " + rs.getString("CreditHrs"));
+                    rs = stmt.executeQuery(query);
                     while(rs.next())
                     {
-                        prereq = rs.getString("PrerequisiteID"); //Name is the string label of a column in database, read through the select query
+                        /*we could not get results running something like
+                        * select prerequisiteID from prerequisite where CourseID = course;
+                        * so our solution is to loop through results and if courseID matches,
+                        * store the corresponding prerequisiteID*/
+                        Log.i("prereqcourse", rs.getString("CourseID"));
+                        Log.i("prereqcourse", course);
+                        Log.i("prereqcourse", String.valueOf(course.equals(rs.getString("CourseID"))));
+                        if(course.equals(rs.getString("CourseID"))) {
+                            prereqs.setText(prereqs.getText() + rs.getString("PrerequisiteID"));
+                        }
                         z = "query successful";
                         isSuccess=true;
                         con.close();
@@ -141,7 +143,7 @@ public class CourseDetails extends AppCompatActivity {
                 Log.d ("sql error", z);
             }
 
-            return z;
+            return courselist1;
         }
     }
 
@@ -185,6 +187,7 @@ public class CourseDetails extends AppCompatActivity {
 
         Intent goToHistory = new Intent(getApplicationContext(), History.class);
        // goToHistory.putExtra("LoginUser", loginUser);
+        goToHistory.putExtra("sID", sID);
         startActivity(goToHistory);
     }
 }

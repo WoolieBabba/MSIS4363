@@ -58,18 +58,6 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnMoreDetails"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons"
-                android:onClick="MoreDetails"
-                android:text="MORE DETAILS"
-                android:textColor="?attr/colorBackgroundFloating"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <Button
                 android:id="@+id/btnAddPlan"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
