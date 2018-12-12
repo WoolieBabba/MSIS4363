@@ -2,24 +2,31 @@ package com.example.owner.prereqcheckapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class Register extends AppCompatActivity {
     // Declaring layout button, edit texts
@@ -55,13 +62,13 @@ public class Register extends AppCompatActivity {
     public class InsertRegister extends AsyncTask<String,String,String> {
         String z = "";
         Boolean isSuccess = false;
-        EditText enteredStudentID = (EditText) findViewById(R.id.studentID);
+        TextView usernameLabel = (TextView) findViewById(R.id.usernameLabel);
         EditText enteredFirst = (EditText) findViewById(R.id.firstName);
         EditText enteredLast = (EditText) findViewById(R.id.lastName);
         EditText enteredUser = (EditText) findViewById(R.id.userNameR);
         EditText enteredPass = (EditText) findViewById(R.id.passwordR);
 
-        String sID = enteredStudentID.getText().toString();
+        //String sID = enteredStudentID.getText().toString();
         String fname = enteredFirst.getText().toString();
         String lname = enteredLast.getText().toString();
         String user = enteredUser.getText().toString();
@@ -74,82 +81,74 @@ public class Register extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r) {
 
-            Toast.makeText(getApplicationContext(), "You have successfully registered!", Toast.LENGTH_SHORT).show();
-          //  if (isSuccess) {
-
+            if (isSuccess) {
                 Intent goToLogin = new Intent(getApplicationContext(), Login.class);
                 startActivity(goToLogin);
-           // }
+            }
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-             userList = new ArrayList<String>();
+            // userList = new ArrayList<String>();
+            //Intent goToRegisterPage = new Intent(getApplicationContext(), Login.class);
+            //startActivity(goToRegisterPage);
 
             try {
                 con = connectionclass();        // Connect to database
                 if (con == null) {
                     z = "Check Your Internet Access!";
-                } else {
-                    String query = "Select StudentID from student";
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(query);
+                }
+                else {
 
+                    String query3 = "Select Username from students where Username = '" + user + "'";
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs = stmt3.executeQuery(query3);
+                    //if there is something in resultset, that username already exists.
                     if (rs.next()) {
-                        //sets the userList Array to all StudentID from the student table
-                        userList.add(rs.getString("StudentID"));
+                        // Let user know that the username is unavailable
+                        usernameLabel.setTextColor(Color.RED);
+                        usernameLabel.setText("USERNAME TAKEN");
+                    }
+                    else {
+                        Log.i("registernewuser", "username free");
+                        usernameLabel.setTextColor(Color.parseColor("#f17a0a"));
+                        usernameLabel.setText("USERNAME");
+                        // Insert the user into the database
 
-                        //Check if a person with the same username exists
-                        for (String i : userList) {
-                            if (sID.equals(i)) {
-                                doesStudentIDExist = true;
-                            }
+                        String insertStudentQuery = "Insert into students(Username, Password, FirstName, LastName) values ('" + user + "', '" + pass + "', '" + fname + "', '" + lname + "');";
+                        Statement stmt2 = con.createStatement();
+                        stmt2.executeUpdate(insertStudentQuery);
+                        Log.i("register studentcreated", "student created");
 
+                        //once new user inserted, need to create corresponding record in studentplan table
+                        String selectNewStudentID = "select StudentID from students where Username = '" + user + "'";
+                        Statement seNeStID = con.createStatement();
+                        ResultSet rs3 = seNeStID.executeQuery(selectNewStudentID);
+                        if(rs3.next()) {
+                            Log.i("register newStudentID", String.valueOf(rs3.getInt("StudentID")));
+                            String createPlanForNewStudent = "insert into studentplan(StudentID) values (" +
+                                    String.valueOf(rs3.getInt("StudentID")) + ");";
+                            Statement crplfonest = con.createStatement();
+                            crplfonest.executeUpdate(createPlanForNewStudent);
+                            isSuccess = true;
+                            z = "account created successfully";
                         }
-                        if (!doesStudentIDExist) {
-                            // Change below query according to your own database.
-                            String query2 = "Insert into student(StudentID, Username, Password, Firstname, Lastname) ";
-                            query2 += " values('" + sID + "','" + user + "', '" + pass + "', '" + fname + "', '" + lname + "')";
-                            Statement stmt2 = con.createStatement();
-                            ResultSet rs2 = stmt2.executeQuery(query2);
-
-                            if (rs2.next()) {
-
-                                //sID = rs.getString("StudentID");
-                                // user = rs.getString("Username");
-                                // pass = rs.getString("Password");
-                                // fname = rs.getString("Firstname");
-                                // lname = rs.getString("Lastname");
-
-                                z = "query successful";
-                                isSuccess = true;
-                                con.close();
-
-                            } else {
-                                z = "Invalid Query!";
-                                isSuccess = false;
-                            }
-                        }
-                        else{
-                            doesStudentIDExist = false;
-                            Toast.makeText(getApplicationContext(), "An account with this Student ID already exists", Toast.LENGTH_SHORT).show();
-                        }
+                        con.close();
                     }
                 }
             }
             catch(Exception ex)
-                {
-                    isSuccess = false;
-                    z = ex.getMessage();
+            {
+                isSuccess = false;
+                z = ex.getMessage();
 
-                    Log.d("sql error", z);
-                }
-
-                return z;
+                Log.d("sql error", z);
             }
+            Log.i("registerz", z);
+            return z;
         }
-
+    }
 
     @SuppressLint("NewApi")
     public Connection connectionclass()

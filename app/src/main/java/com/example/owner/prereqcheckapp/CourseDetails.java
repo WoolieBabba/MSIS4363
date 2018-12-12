@@ -180,7 +180,6 @@ public class CourseDetails extends AppCompatActivity {
     public void AddPlan(View v) {
 
         Intent goToDegreePlan = new Intent(getApplicationContext(), DegreePlan.class);
-       // goToDegreePlan.putExtra("LoginUser", loginUser);
         goToDegreePlan.putExtra("sID", sID);
         startActivity(goToDegreePlan);
     }

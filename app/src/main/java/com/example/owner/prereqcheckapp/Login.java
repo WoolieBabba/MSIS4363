@@ -85,31 +85,15 @@ public class CheckLogin extends AsyncTask<String, String, String>
         // progressBar.setVisibility(View.GONE);
         // Toast.makeText(Login.this, r, Toast.LENGTH_LONG).show();
 
-        //Check if user provided input for username
-        if (!user1.equals("")) {
-
-            //User Authentication
-            for (String i : arrayUsers) {
-
-                //Check if there is a record in the database that corresponds to the value user provided
-                if (user1.equals(i)) {
-
-                    //Password Authentication
-                    //Check if identified user provided correct password
-                    if (pass.equals(arrayPass.get(arrayUsers.indexOf(i)))) {
-                        sID = arrayStudentID.get(arrayUsers.indexOf(i)); //grab corresponding student ID to pass through intents
-                        //Redirect to Program selection page
-                        Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
-                        goToCourseSelection.putExtra("sID", sID);
-                        startActivity(goToCourseSelection);
-
-                        //Notify user that password is wrong
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
+        //if isSuccess was true (i.e. username found and password matches), intent to course list activity
+        if (isSuccess) {
+            Intent goToCourseSelection = new Intent(getApplicationContext(), CourseSelection.class);
+            goToCourseSelection.putExtra("sID", sID);
+            startActivity(goToCourseSelection);
+        }
+        //otherwise, toast the user why login was unsuccessful
+        else {
+            Toast.makeText(getApplicationContext(), z, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,40 +112,25 @@ public class CheckLogin extends AsyncTask<String, String, String>
             }
             else
             {
+                if (!user1.equals("")) {
+                    String query = "select StudentID, Password from students where Username = '" + user1 + "'";
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery(query);
+                    if (rs.next()) {
+                        if(pass.equals(rs.getString("Password"))){
+                            sID = rs.getInt("StudentID");
+                            z = "login successful";
+                            isSuccess = true;
+                            con.close();
+                        }
 
-
-                // Change below query according to your own database.
-                String query = "select StudentID, Username, Password from student";
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()){
-                    arrayUsers.add(rs.getString("Username"));
-                    arrayPass.add(rs.getString("Password"));
-                    arrayStudentID.add(rs.getInt("StudentID"));
+                    } else {
+                        z = "Username " + user1 + " not found.";
+                        isSuccess = false;
+                    }
                 }
-
-                if(rs.next())
-                {
-
-                    sID = rs.getInt("StudentID"); //Name is the string label of a column in database, read through the select query
-                   // pass = rs.getString("Password");
-
-
-
-                    
-  //                  if (enteredUser.getText().toString() != "") {
-   //                     if (enteredUser.getText().toString() == u &&
-   //                             enteredPword.getText().toString() == p)
-    //                       Toast.makeText(Login.this, "yay", Toast.LENGTH_LONG).show();
-    //                }
-                    z = "query successful";
-                    isSuccess=true;
-                    con.close();
-
-                }
-                else
-                {
-                    z = "Invalid Query!";
+                else {
+                    z = "Username cannot be blank.";
                     isSuccess = false;
                 }
             }
