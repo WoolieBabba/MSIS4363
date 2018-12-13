@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -50,7 +48,8 @@ public class DegreePlan extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-
+                AddHistory addToHistory = new AddHistory();// this is the Asynctask, which is used to process in background to reduce load on app process
+                addToHistory.execute("");
 
             }
         });
@@ -101,30 +100,15 @@ public class DegreePlan extends AppCompatActivity {
                 {
                     z = "Check Your Internet Access!";
                 }
-                else
-                {
+                else {
                     // Change below query according to your own database.
                     String query = "select courseID from planitem where planid in(select planid from studentplan where studentID = " + Integer.toString(sID) + ");";
                     Log.i("query", query);
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
-                    if(rs.next()) {
+                    while (rs.next()) {
                         Log.i("prereqCourse", rs.getString("courseID"));
                         arrayPrereq.add(rs.getString("courseID"));
-                    }
-
-                    if(rs.next())
-                    {
-                       // name1 = rs.getString("lastName"); //Name is the string label of a column in database, read through the select query
-                        z = "query successful";
-                        isSuccess=true;
-                        con.close();
-
-                    }
-                    else
-                    {
-                        z = "Invalid Query!";
-                        isSuccess = false;
                     }
                 }
             }
@@ -139,11 +123,6 @@ public class DegreePlan extends AppCompatActivity {
             return arrayPrereq;
         }
     }
-
-   /* public class AddAllToPlan extends AsyncTask<String,String,null>
-    {
-
-    }*/
     @SuppressLint("NewApi")
     public Connection connectionclass()
     {
@@ -172,12 +151,73 @@ public class DegreePlan extends AppCompatActivity {
         }
         return connection;
     }
-    public void ViewHistory(View v) {
+    public class AddHistory extends AsyncTask<String,String,String> {
+        String z = "";
+        Boolean isSuccess = false;
+        String prereq = "";
 
+
+        protected void onPreExecute()
+        {
+
+        }
+
+        @Override
+        protected void onPostExecute(String z)
+        {
+
+            if(isSuccess)
+            {
+                Intent goToHistory = new Intent(getApplicationContext(), History.class);
+                goToHistory.putExtra("sID", sID);
+                startActivity(goToHistory);
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+
+            try
+            {
+                con = connectionclass();        // Connect to database
+                if (con == null)
+                {
+                    z = "Check Your Internet Access!";
+                }
+                else {
+                    //for each course in the plan, add to history,
+
+                    for (Iterator<String> planCourses = arrayPrereq.iterator(); planCourses.hasNext();) {
+
+                        String courseToAdd = planCourses.next();
+                        String placeCourseIntoHistory = "insert into history (studentid, courseid) values (" +
+                                sID.toString() + ", '" + courseToAdd + "');";
+                        Log.i("details addtoplaninsert", placeCourseIntoHistory);
+                        Statement plcoinhi = con.createStatement();
+                        plcoinhi.executeUpdate(placeCourseIntoHistory);
+                        isSuccess = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                z = ex.getMessage();
+
+                Log.d ("sql error", z);
+            }
+            Log.i("planz", z);
+            return z;
+        }
+    }
+
+    public void ViewHistory (View v) {
         Intent goToHistory = new Intent(getApplicationContext(), History.class);
         goToHistory.putExtra("sID", sID);
         startActivity(goToHistory);
     }
+
 }
 
 //
