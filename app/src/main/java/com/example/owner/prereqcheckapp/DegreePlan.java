@@ -196,8 +196,14 @@ public class DegreePlan extends AppCompatActivity {
                         Log.i("details addtoplaninsert", placeCourseIntoHistory);
                         Statement plcoinhi = con.createStatement();
                         plcoinhi.executeUpdate(placeCourseIntoHistory);
-                        isSuccess = true;
+
                     }
+
+                    //delete courses from the plan
+                    String deletePlanCourses = "delete from planitem where planid " +
+                            "in(select planid from studentplan where StudendID = " + sID.toString() + ");";
+                    Statement deplco = con.createStatement();
+                    deplco.executeUpdate(deletePlanCourses);
                 }
             }
             catch (Exception ex)
