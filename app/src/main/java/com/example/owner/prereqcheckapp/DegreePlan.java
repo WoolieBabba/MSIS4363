@@ -45,14 +45,15 @@ public class DegreePlan extends AppCompatActivity {
         // Getting values from button, texts and progress bar
         run = (Button) findViewById(R.id.btnAddHistory);
 
- /*       run.setOnClickListener(new View.OnClickListener()
+       run.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
 
+
             }
-        });*/
+        });
         LoadPlan plan = new LoadPlan();// this is the Asynctask, which is used to process in background to reduce load on app process
         plan.execute("");
         arrayListCourse = new ArrayList<String>();
@@ -107,7 +108,7 @@ public class DegreePlan extends AppCompatActivity {
                     Log.i("query", query);
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
-                    while(rs.next()) {
+                    if(rs.next()) {
                         Log.i("prereqCourse", rs.getString("courseID"));
                         arrayPrereq.add(rs.getString("courseID"));
                     }

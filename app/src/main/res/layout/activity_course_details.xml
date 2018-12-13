@@ -46,8 +46,8 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView14"
+        <ListView
+            android:id="@+id/prereqsList"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
